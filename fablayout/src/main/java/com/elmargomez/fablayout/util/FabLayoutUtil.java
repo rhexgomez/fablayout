@@ -16,7 +16,12 @@
 
 package com.elmargomez.fablayout.util;
 
+import android.content.Context;
+
 public class FabLayoutUtil {
 
+    public static float dpFromPx(Context context, int px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
 
 }
