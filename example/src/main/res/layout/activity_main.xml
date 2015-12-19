@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.elmargomez.fablayout.widget.FabLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="500dp"
-    android:background="#CF6701">
+    android:layout_height="wrap_content"
+    android:background="#CF6701"
+    android:layout_marginLeft="40dp">
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
 
 </com.elmargomez.fablayout.widget.FabLayout>
