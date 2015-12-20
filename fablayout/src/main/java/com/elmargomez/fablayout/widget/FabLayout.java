@@ -52,7 +52,6 @@ public class FabLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int childSize = getChildCount();
-
         int occupiedWidth = 0;
         int occupiedHeight = 0;
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -61,17 +60,23 @@ public class FabLayout extends ViewGroup {
         for (int x = 0; x < childSize; x++) {
             View view = getChildAt(x);
             boolean instanceOfView = view instanceof FloatingActionButton;
+
             if (instanceOfView && view.getVisibility() != GONE) {
                 measureChildWithMargins(view, widthMeasureSpec, 0, heightMeasureSpec, 0);
                 LayoutParams layout = (LayoutParams) view.getLayoutParams();
-                int currentViewWidth = view.getMeasuredWidth() + layout.leftMargin + layout.rightMargin;
+                int currentViewWidth = view.getMeasuredWidth() + layout.leftMargin +
+                        layout.rightMargin;
                 occupiedWidth = Math.max(currentViewWidth, occupiedWidth);
-                occupiedHeight += view.getMeasuredHeight() + layout.topMargin + layout.bottomMargin;
+                occupiedHeight += view.getMeasuredHeight() + layout.topMargin
+                        + layout.bottomMargin;
             } else if (!instanceOfView) {
                 // we want to remove the non FAB view
                 view.setVisibility(GONE);
             }
         }
+
+        occupiedWidth += getPaddingLeft() + getPaddingRight();
+        occupiedHeight += getPaddingTop() + getPaddingBottom();
 
         switch (widthMode) {
             case MeasureSpec.EXACTLY:
@@ -90,19 +95,26 @@ public class FabLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
         final int childSize = getChildCount();
+        // Filtering the visible zone
+        int left = l + getPaddingLeft();
+        int top = t + getPaddingTop();
+        int right = r - getPaddingRight();
+        int bottom = b - getPaddingBottom();
+        int yCoordinate = bottom;
+
         for (int x = childSize; x >= 0; x--) {
             View view = getChildAt(x);
             boolean instanceOfView = view instanceof FloatingActionButton;
+
             if (instanceOfView && view.getVisibility() != GONE) {
-                LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
-                int xCoordinate = ((r - view.getMeasuredWidth()) - layoutParams.leftMargin) - l;
-                int yCoordinate = ((b - view.getMeasuredHeight()) - layoutParams.bottomMargin) - t;
-                int width = (r - layoutParams.rightMargin) - l;
-                int height = (b - layoutParams.topMargin) - t;
+                LayoutParams viewLayout = (LayoutParams) view.getLayoutParams();
+                int xCoordinate = right - view.getMeasuredWidth() - viewLayout.rightMargin;
+                yCoordinate -= (view.getMeasuredHeight() + viewLayout.bottomMargin);
+                int width = xCoordinate + view.getMeasuredWidth();
+                int height = yCoordinate + view.getMeasuredHeight();
                 view.layout(xCoordinate, yCoordinate, width, height);
-                b -= view.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
+                yCoordinate -= viewLayout.topMargin;
             }
         }
     }
