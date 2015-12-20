@@ -17,16 +17,12 @@
 package com.elmargomez.fablayout.widget;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.content.Context;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 public class FabLayout extends ViewGroup {
 
@@ -94,17 +90,17 @@ public class FabLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.e("OnLayout",l+" "+t+" "+r+" "+b);
+
         final int childSize = getChildCount();
-        for (int x = 0; x < childSize; x++) {
+        for (int x = childSize; x >= 0; x--) {
             View view = getChildAt(x);
             boolean instanceOfView = view instanceof FloatingActionButton;
             if (instanceOfView && view.getVisibility() != GONE) {
                 LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
-                int xCoordinate = (r - view.getMeasuredWidth()) - layoutParams.leftMargin;
-                int yCoordinate = (b - view.getMeasuredHeight()) - layoutParams.bottomMargin;
-                int width = r - layoutParams.rightMargin;
-                int height = b - layoutParams.topMargin;
+                int xCoordinate = ((r - view.getMeasuredWidth()) - layoutParams.leftMargin) - l;
+                int yCoordinate = ((b - view.getMeasuredHeight()) - layoutParams.bottomMargin) - t;
+                int width = (r - layoutParams.rightMargin) - l;
+                int height = (b - layoutParams.topMargin) - t;
                 view.layout(xCoordinate, yCoordinate, width, height);
                 b -= view.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
             }
