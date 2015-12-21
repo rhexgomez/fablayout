@@ -48,7 +48,7 @@ public class FabLayout extends ViewGroup {
     }
 
     public FabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        super(context, attrs, defStyleAttr);
         showAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fl_show_animation);
         hideAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.fl_hide_animation);
         initViews();
@@ -57,6 +57,9 @@ public class FabLayout extends ViewGroup {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public FabLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        showAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fl_show_animation);
+        hideAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.fl_hide_animation);
+        initViews();
     }
 
 
