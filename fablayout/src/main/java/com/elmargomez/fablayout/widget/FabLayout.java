@@ -23,30 +23,62 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import com.elmargomez.fablayout.R;
 
 public class FabLayout extends ViewGroup {
 
     private static final int MAX_FAB_COUNT = 6;
 
+    private Animation showAnimation = null;
+    private Animation hideAnimation = null;
+    private boolean isHidden = true;
     private boolean alignButtonRight = true;
     private boolean hasTittle = true;
     private boolean animateBottomTop = true;
 
     public FabLayout(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public FabLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public FabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        this(context, attrs, defStyleAttr, 0);
+        showAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fl_show_animation);
+        hideAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.fl_hide_animation);
+        initViews();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public FabLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+
+    private void initViews() {
+        if (isHidden && !isInEditMode()) {
+            int childSize = getChildCount();
+            for (int x = 0; x < childSize; x++) {
+                getChildAt(x).setVisibility(INVISIBLE);
+            }
+            setVisibility(GONE);
+        }
+    }
+
+    public void showView() {
+        if (isHidden) {
+            setVisibility(VISIBLE);
+            int childSize = getChildCount();
+            showAnimation.setDuration(600);
+            for (int x = 0; x < childSize; x++) {
+                getChildAt(x).startAnimation(showAnimation);
+            }
+        }
     }
 
     @Override
@@ -117,6 +149,10 @@ public class FabLayout extends ViewGroup {
                 yCoordinate -= viewLayout.topMargin;
             }
         }
+    }
+
+    public void show() {
+
     }
 
     @Override
