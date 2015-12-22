@@ -18,7 +18,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void click(View v) {
-        fabLayout.showView();
+        if (fabLayout.isHidden()) {
+            fabLayout.showFabs();
+        } else {
+            fabLayout.hideFabs();
+        }
     }
 
 }

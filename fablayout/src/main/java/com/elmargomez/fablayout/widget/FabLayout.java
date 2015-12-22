@@ -62,7 +62,6 @@ public class FabLayout extends ViewGroup {
         initViews();
     }
 
-
     private void initViews() {
         if (isHidden && !isInEditMode()) {
             int childSize = getChildCount();
@@ -73,7 +72,7 @@ public class FabLayout extends ViewGroup {
         }
     }
 
-    public void showView() {
+    public void showFabs() {
         if (isHidden) {
             setVisibility(VISIBLE);
             int childSize = getChildCount();
@@ -81,7 +80,25 @@ public class FabLayout extends ViewGroup {
             for (int x = 0; x < childSize; x++) {
                 getChildAt(x).startAnimation(showAnimation);
             }
+            isHidden = false;
         }
+    }
+
+    public void hideFabs(){
+        if (!isHidden) {
+            int childSize = getChildCount();
+            showAnimation.setDuration(600);
+            for (int x = 0; x < childSize; x++) {
+                View button = getChildAt(x);
+                button.startAnimation(hideAnimation);
+            }
+            setVisibility(GONE);
+            isHidden = true;
+        }
+    }
+
+    public boolean isHidden(){
+        return isHidden;
     }
 
     @Override
@@ -152,10 +169,6 @@ public class FabLayout extends ViewGroup {
                 yCoordinate -= viewLayout.topMargin;
             }
         }
-    }
-
-    public void show() {
-
     }
 
     @Override
